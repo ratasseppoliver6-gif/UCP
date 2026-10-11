@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grandera Meditsiiniteenistus - UCP</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #111111; color: #ffffff; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background-color: #1a1a1a; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); width: 100%; max-width: 400px; text-align: center; border: 1px solid #333; }
+        h1 { color: #e74c3c; font-size: 24px; margin-bottom: 5px; }
+        h2 { font-size: 14px; color: #888; margin-top: 0; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; }
+        .form-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; font-size: 12px; color: #aaa; margin-bottom: 5px; text-transform: uppercase; }
+        input { width: 100%; padding: 12px; border: 1px solid #333; background-color: #222; color: #fff; border-radius: 5px; box-sizing: border-box; font-size: 14px; }
+        input:focus { border-color: #e74c3c; outline: none; }
+        button { width: 100%; padding: 12px; background-color: #e74c3c; border: none; color: #fff; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer; transition: background 0.2s; margin-top: 10px; }
+        button:hover { background-color: #c0392b; }
+        .dashboard { display: none; max-width: 600px; text-align: left; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .stat-card { background-color: #222; padding: 15px; border-radius: 5px; border-left: 4px solid #3498db; }
+        .stat-card.strikes { border-left-color: #e74c3c; }
+        .stat-card.rank { border-left-color: #2ecc71; }
+        .stat-title { font-size: 11px; color: #aaa; text-transform: uppercase; }
+        .stat-value { font-size: 20px; font-weight: bold; margin-top: 5px; }
+        .menu-nav { display: flex; gap: 10px; margin-top: 25px; border-top: 1px solid #333; padding-top: 15px; }
+        .menu-link { color: #3498db; text-decoration: none; font-size: 14px; font-weight: bold; }
+        .menu-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <!-- SISSELOGIMISE INFOKAST -->
+    <div id="login-box" class="container">
+        <h1>🚑 GRANDERA EMS</h1>
+        <h2>Kasutajapaneel (UCP)</h2>
+        <div class="form-group">
+            <label>Mängusisene nimi (Eesnimi_Perekonnanimi)</label>
+            <input type="text" id="username" placeholder="Nt. Oliver_Ratassepp">
+        </div>
+        <div class="form-group">
+            <label>UCP Parool</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+        <button onclick="vaataSisse()">Logi sisse</button>
+    </div>
+
+    <!-- TÖÖTAJA ISIKLIK TÖÖLAUD -->
+    <div id="dashboard-box" class="container dashboard">
+        <h1>🚑 MEDITSIINITEENISTUS</h1>
+        <h2>Töötaja töölaud</h2>
+        <p>Tere tulemast tagasi, <strong id="user-display" style="color: #3498db;">Ametnik</strong>!</p>
+        
+        <div class="stats-grid">
+            <div class="stat-card rank">
+                <div class="stat-title">Sinu auaste</div>
+                <div class="stat-value" id="rank-display">Tuvastamisel</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Nädalatunnid</div>
+                <div class="stat-value">5.5 h / 10h</div>
+            </div>
+            <div class="stat-card strikes">
+                <div class="stat-title">Noomitused</div>
+                <div class="stat-value">0 / 3</div>
+            </div>
+            <div class="stat-card" style="border-left-color: #e67e22;">
+                <div class="stat-title">Koolitaja luba</div>
+                <div class="stat-value" id="trainer-display">Puudub</div>
+            </div>
+        </div>
+
+        <div class="menu-nav">
+            <a href="#" class="menu-link">Akadeemia testid</a>
+            <a href="#" class="menu-link">Puhkuse avaldus</a>
+            <a href="#" class="menu-link" style="color: #e74c3c;" onclick="logiValja()">Logi välja</a>
+        </div>
+    </div>
+
+    <script>
+        function vaataSisse() {
+            var nimi = document.getElementById("username").value;
+            var parool = document.getElementById("password").value;
+            
+            if(nimi.trim() === "" || parool.trim() === "") {
+                alert("Palun täida kaikki väljad!");
+                return;
+            }
+
+            document.getElementById("login-box").style.display = "none";
+            document.getElementById("dashboard-box").style.display = "block";
+            document.getElementById("user-display").innerText = nimi;
+
+            // Kontrollime peadirektori nime
+            if(nimi.toLowerCase().includes("oliver")) {
+                document.getElementById("rank-display").innerText = "Peadirektor (01)";
+                document.getElementById("trainer-display").innerText = "AKTIIVNE";
+            } else {
+                document.getElementById("rank-display").innerText = "Praktikant (08)";
+                document.getElementById("trainer-display").innerText = "Puudub";
+            }
+        }
+
+        function logiValja() {
+            document.getElementById("dashboard-box").style.display = "none";
+            document.getElementById("login-box").style.display = "block";
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+    </script>
+</body>
+</html>
